@@ -1,0 +1,25 @@
+{
+  "name": "jmarcher/fluent-curl-wrapper",
+  "description": "A fluent CURL wrapper",
+  "keywords": ["curl", "fluent", "api"],
+  "license":"apache 2",
+  "authors":[
+    {
+      "name": "Joaquin Marcher",
+      "email": "joaquin@marcher.com.uy"
+    }
+  ],
+  "require":{
+    "php": ">=5.4.0",
+    "ext-curl": "*"
+  },
+  "autoload":{
+    "psr-4":{
+      "Marcher\\FluentCurl\\":"src/JMarcher/FluentCurl"
+    }
+  },
+  "config":{
+    "preferred-install":"dist"
+  },
+  "minimum-stability":"dev"
+}
