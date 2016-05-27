@@ -1,7 +1,7 @@
 {
   "name": "jmarcher/fluent-curl-wrapper",
-  "description": "A fluent CURL wrapper",
-  "keywords": ["curl", "fluent", "api"],
+  "description": "A fluent PHP CURL wrapper",
+  "keywords": ["curl", "fluent", "api", "PHP"],
   "license":"apache 2",
   "authors":[
     {
