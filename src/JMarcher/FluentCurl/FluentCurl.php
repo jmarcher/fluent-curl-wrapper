@@ -169,7 +169,7 @@ class FluentCurl
      * @param mixed $must_return_transfer
      * @return FluentCurl
      */
-    public function setMustReturnTransfer(bool $must_return_transfer)
+    public function setMustReturnTransfer(bool $must_return_transfer = true)
     {
         $this->must_return_transfer = $must_return_transfer;
         curl_setopt($this->connection, CURLOPT_RETURNTRANSFER, $must_return_transfer);
@@ -223,5 +223,20 @@ class FluentCurl
         return $this;
     }
 
-
+    /**
+     * Wraps all the post functionality into a single method
+     *
+     * @param string $url
+     * @param array  $data
+     * @param array  $headers
+     */
+    public function doPostRequest(string $url, array $data, array $headers = [])
+    {
+        $this->setUrl($url)
+            ->setPostMethod()
+            ->setPostFields($data)
+            ->setMustReturnTransfer()
+            ->setHttpHeader($headers)
+            ->execute();
+    }
 }
