@@ -16,7 +16,7 @@ class FluentCurl
      */
     protected $connection;
     /**
-     * @var null
+     * @var string
      */
     protected $url;
     /**
@@ -75,7 +75,7 @@ class FluentCurl
     }
 
     /**
-     * @return null
+     * @return string
      */
     public function getUrl()
     {
@@ -83,10 +83,10 @@ class FluentCurl
     }
 
     /**
-     * @param null $url
+     * @param string $url
      * @return FluentCurl
      */
-    public function setUrl($url)
+    public function setUrl(string $url)
     {
         $this->url = $url;
 
@@ -189,7 +189,7 @@ class FluentCurl
      * @param mixed $post_fields
      * @return FluentCurl
      */
-    public function setPostFields($post_fields, $shouldEncode = true)
+    public function setPostFields(array $post_fields,bool $shouldEncode = true)
     {
         $this->post_fields = $post_fields;
         curl_setopt($this->connection, CURLOPT_POSTFIELDS, $shouldEncode ? json_encode($post_fields) : $post_fields);
@@ -202,7 +202,7 @@ class FluentCurl
      * @param bool $closeAfterExecution
      * @return $this
      */
-    public function execute($logErrors = true, $closeAfterExecution = true)
+    public function execute(bool $logErrors = true,bool $closeAfterExecution = true)
     {
         $this->result = curl_exec($this->connection);
         if ($logErrors && curl_errno($this->connection)) {
@@ -238,5 +238,7 @@ class FluentCurl
             ->setMustReturnTransfer()
             ->setHttpHeader($headers)
             ->execute();
+
+        return $this;
     }
 }
