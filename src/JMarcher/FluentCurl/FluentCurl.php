@@ -45,6 +45,11 @@ class FluentCurl
     protected $errors = [];
 
     /**
+     * @var callable
+     */
+    protected $callback;
+
+    /**
      * FluentCurl constructor.
      */
     public function __construct($url = null)
@@ -116,14 +121,6 @@ class FluentCurl
     /**
      * @return FluentCurl
      */
-    public function setPostMethod()
-    {
-        return $this->setMethod(CURLOPT_POST);
-    }
-
-    /**
-     * @return FluentCurl
-     */
     public function setPutMethod()
     {
         return $this->setMethod(CURLOPT_PUT);
@@ -189,28 +186,11 @@ class FluentCurl
      * @param mixed $post_fields
      * @return FluentCurl
      */
-    public function setPostFields(array $post_fields,bool $shouldEncode = true)
+    public function setPostFields(array $post_fields, bool $shouldEncode = true)
     {
         $this->post_fields = $post_fields;
         curl_setopt($this->connection, CURLOPT_POSTFIELDS, $shouldEncode ? json_encode($post_fields) : $post_fields);
 
-        return $this;
-    }
-
-    /**
-     * @param bool $logErrors
-     * @param bool $closeAfterExecution
-     * @return $this
-     */
-    public function execute(bool $logErrors = true,bool $closeAfterExecution = true)
-    {
-        $this->result = curl_exec($this->connection);
-        if ($logErrors && curl_errno($this->connection)) {
-            $this->errors[] = curl_error($this->connection);
-        }
-        if ($closeAfterExecution) {
-            curl_close($this->connection);
-        }
         return $this;
     }
 
@@ -220,6 +200,7 @@ class FluentCurl
     public function close()
     {
         curl_close($this->connection);
+
         return $this;
     }
 
@@ -240,5 +221,77 @@ class FluentCurl
             ->execute();
 
         return $this;
+    }
+
+    /**
+     * @param bool $logErrors
+     * @param bool $closeAfterExecution
+     * @return $this
+     */
+    public function execute(bool $logErrors = true, bool $closeAfterExecution = true)
+    {
+        $this->result = curl_exec($this->connection);
+        if ($logErrors && curl_errno($this->connection)) {
+            $this->errors[] = curl_error($this->connection);
+        }
+
+        if (filter_var(
+            $this->getInfo(CURLINFO_HTTP_CODE),
+            FILTER_VALIDATE_INT,
+            ['options' => ['min_range' => 100, 'max_range' => 399]])
+        ) {
+            $this->_call($this->callback ?? function(FluentCurl $instance){}, $this);
+        }
+
+
+        if ($closeAfterExecution) {
+            curl_close($this->connection);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get information regarding a specific transfer
+     * @param null|int $opt
+     * @return array|string
+     */
+    public function getInfo($opt = null) {
+        if (null === $opt) {
+            return curl_getinfo($this->connection);
+        }
+        return curl_getinfo($this->connection, $opt);
+    }
+
+    /**
+     * @return FluentCurl
+     */
+    public function setPostMethod()
+    {
+        return $this->setMethod(CURLOPT_POST);
+    }
+
+    /**
+     * @param callable $callback
+     * @return $this
+     */
+    public function withCallback(callable $callback)
+    {
+        $this->callback = $callback;
+
+        return $this;
+    }
+
+    /**
+     * Call callable function
+     * @param callable $function
+     * @param mixed    $params
+     * @return void
+     */
+    private function _call(callable $function, ...$params)
+    {
+        if (is_callable($function)) {
+            call_user_func_array($function, $params);
+        }
     }
 }
