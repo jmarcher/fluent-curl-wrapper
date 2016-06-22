@@ -3,11 +3,9 @@
  * Created by PhpStorm.
  * User: gordo
  * Date: 26/05/16
- * Time: 03:21 PM
+ * Time: 03:21 PM.
  */
-
 namespace Marcher\FluentCurl;
-
 
 class FluentCurl
 {
@@ -67,9 +65,10 @@ class FluentCurl
     }
 
     /**
-     * An already initialized connection
+     * An already initialized connection.
      *
      * @param resource $connection
+     *
      * @return FluentCurl
      */
     public function setConnection($connection)
@@ -89,6 +88,7 @@ class FluentCurl
 
     /**
      * @param string $url
+     *
      * @return FluentCurl
      */
     public function setUrl(string $url)
@@ -108,6 +108,7 @@ class FluentCurl
 
     /**
      * @param mixed $method
+     *
      * @return FluentCurl
      */
     public function setMethod(int $method)
@@ -144,6 +145,7 @@ class FluentCurl
 
     /**
      * @param mixed $http_header
+     *
      * @return FluentCurl
      */
     public function setHttpHeader($http_header)
@@ -164,6 +166,7 @@ class FluentCurl
 
     /**
      * @param mixed $must_return_transfer
+     *
      * @return FluentCurl
      */
     public function setMustReturnTransfer(bool $must_return_transfer = true)
@@ -184,6 +187,7 @@ class FluentCurl
 
     /**
      * @param mixed $post_fields
+     *
      * @return FluentCurl
      */
     public function setPostFields(array $post_fields, bool $shouldEncode = true)
@@ -205,7 +209,7 @@ class FluentCurl
     }
 
     /**
-     * Wraps all the post functionality into a single method
+     * Wraps all the post functionality into a single method.
      *
      * @param string $url
      * @param array  $data
@@ -226,6 +230,7 @@ class FluentCurl
     /**
      * @param bool $logErrors
      * @param bool $closeAfterExecution
+     *
      * @return $this
      */
     public function execute(bool $logErrors = true, bool $closeAfterExecution = true)
@@ -240,7 +245,8 @@ class FluentCurl
             FILTER_VALIDATE_INT,
             ['options' => ['min_range' => 100, 'max_range' => 399]])
         ) {
-            $this->_call($this->callback ?? function(FluentCurl $instance){}, $this);
+            $this->_call($this->callback ?? function (FluentCurl $instance) {
+            }, $this);
         }
 
 
@@ -252,14 +258,18 @@ class FluentCurl
     }
 
     /**
-     * Get information regarding a specific transfer
+     * Get information regarding a specific transfer.
+     *
      * @param null|int $opt
+     *
      * @return array|string
      */
-    public function getInfo($opt = null) {
+    public function getInfo($opt = null)
+    {
         if (null === $opt) {
             return curl_getinfo($this->connection);
         }
+
         return curl_getinfo($this->connection, $opt);
     }
 
@@ -273,6 +283,7 @@ class FluentCurl
 
     /**
      * @param callable $callback
+     *
      * @return $this
      */
     public function withCallback(callable $callback)
@@ -283,9 +294,11 @@ class FluentCurl
     }
 
     /**
-     * Call callable function
+     * Call callable function.
+     *
      * @param callable $function
      * @param mixed    $params
+     *
      * @return void
      */
     private function _call(callable $function, ...$params)
