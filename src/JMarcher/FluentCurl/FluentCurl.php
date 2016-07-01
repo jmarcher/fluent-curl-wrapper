@@ -43,6 +43,8 @@ class FluentCurl
     protected $errors = [];
 
     /**
+     * Callback function to be called after a succesfully made request.
+     *
      * @var callable
      */
     protected $callback;
@@ -223,6 +225,9 @@ class FluentCurl
             ->setMustReturnTransfer()
             ->setHttpHeader($headers)
             ->execute();
+        $this->_call($this->callback ?? function (FluentCurl $instance) {
+            }, $this);
+
 
         return $this;
     }
