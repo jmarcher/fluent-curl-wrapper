@@ -96,6 +96,7 @@ class FluentCurl
     public function setUrl(string $url)
     {
         $this->url = $url;
+        $this->connection = curl_init($url);
 
         return $this;
     }
