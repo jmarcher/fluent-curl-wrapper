@@ -316,7 +316,7 @@ class FluentCurl
 
     public function hasErrors()
     {
-        return count($this->errors)>0;
+        return count($this->errors) > 0;
     }
 
     public function getErrors()
