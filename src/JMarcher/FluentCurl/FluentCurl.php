@@ -231,7 +231,7 @@ class FluentCurl
             ->setHttpHeader($headers)
             ->execute(true, $closeConnection);
         $this->_call($this->callback ?? function (FluentCurl $instance) {
-      }, $this);
+        }, $this);
 
         return $this;
     }
