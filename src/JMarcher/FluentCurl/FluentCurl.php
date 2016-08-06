@@ -230,12 +230,9 @@ class FluentCurl
             ->setPostFields($data)
             ->setMustReturnTransfer()
             ->setHttpHeader($headers)
-            ->execute();
+            ->execute(true, $closeConnection);
         $this->_call($this->callback ?? function (FluentCurl $instance) {
-        }, $this);
-        if( $closeConnection ){
-          $this->close();
-        }
+      }, $this);
 
         return $this;
     }
