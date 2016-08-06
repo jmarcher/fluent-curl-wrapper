@@ -223,8 +223,7 @@ class FluentCurl
       array $data,
       array $headers = [],
       bool $closeConnection = true
-    )
-    {
+    ) {
         $this->setUrl($url)
             ->setPostMethod()
             ->setPostFields($data)
@@ -319,20 +318,20 @@ class FluentCurl
     }
 
     /**
-    * Returns true if the array of errors is bigger than one
-    *
-    * @return bool
-    */
+     * Returns true if the array of errors is bigger than one.
+     *
+     * @return bool
+     */
     public function hasErrors()
     {
         return count($this->errors) > 0;
     }
 
     /**
-    * Returns an array with the requests errors
-    *
-    * @return array
-    */
+     * Returns an array with the requests errors.
+     *
+     * @return array
+     */
     public function getErrors()
     {
         return $this->errors;
